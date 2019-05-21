@@ -1,0 +1,84 @@
+@keyframes btn_lr_swing {
+    0% {
+        transform: scale(1);
+    }
+    15% {
+        transform: scale(0.99);
+    }
+    30% {
+        transform: scale(0.99);
+    }
+    45% {
+        transform: scale(1);
+    }
+    60% {
+        transform: scale(1.02);
+    }
+    75% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes guess_up_anim {
+    0% {
+        transform: scale(1);
+    }
+    4% {
+        transform: scale(1.05);
+    }
+    20% {
+        transform: scale(0.95);
+    }
+    30% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes guess_down_anim {
+    0% {
+        transform: scale(1);
+    }
+    4% {
+        transform: scale(1.05);
+    }
+    20% {
+        transform: scale(0.95);
+    }
+    30% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes rotation {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}
+
+//小手指动画
+@keyframes hand_animation {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+    to {
+        transform: translate3d(-10px, -10px, 0);
+    }
+}
+
+//呼吸按钮
+@keyframes breathing_btn {
+    from {
+        transform: scale3d(1, 1, 1);
+    }
+    to {
+        transform: scale3d(1.15, 1.15, 1);
+    }
+}

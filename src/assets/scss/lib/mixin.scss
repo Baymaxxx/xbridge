@@ -1,0 +1,259 @@
+@mixin hack($name, $value) {
+    -moz-#{$name}: $value;
+    -webkit-#{$name}: $value;
+    #{$name}: $value;
+}
+
+@mixin borderRadius($param) {
+    @include hack(border-radius, $param);
+}
+
+@mixin gra($begin, $end) {
+    background-image: -webkit-gradient(linear, left top, left bottom, from($begin), to($end));
+    background-image: -webkit-linear-gradient(top, $begin, $end);
+    background-image: -moz-linear-gradient(top, $begin, $end);
+    background-image: -o-linear-gradient(top, $begin, $end);
+    background-image: linear-gradient(top, $begin, $end);
+}
+
+@mixin rotate($degrees) {
+    @include hack(transform, rotate($degrees));
+}
+
+@mixin scale($x, $y) {
+    @include hack(transform, scale($x, $y));
+}
+
+@mixin center() {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin border1pxbg($direction, $color) {
+    @media screen and (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+        border: 0 none;
+        @if ($direction==top) {
+            background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.5, rgba(0, 0, 0, 0)), color-stop(0.5, $color));
+            background-position: left top;
+            background-repeat: repeat-x;
+            background-size: 100% $px1;
+        }
+        @if ($direction==bottom) {
+            background-image: -webkit-gradient(linear, left top, left bottom, color-stop(50%, transparent), color-stop(50%, $color));
+            background-position: left bottom;
+            background-repeat: repeat-x;
+            background-size: 100% $px1;
+        }
+        @if ($direction==left) {
+            background-image: -webkit-gradient(linear, left top, right top, color-stop(50%, transparent), color-stop(50%, $color));
+            background-position: left top;
+            background-size: $px1 100%;
+            background-repeat: repeat-y;
+        }
+        @if ($direction==right) {
+            background-image: -webkit-gradient(linear, left top, right top, color-stop(50%, transparent), color-stop(50%, $color));
+            background-position: right top;
+            background-size: $px1 100%;
+            background-repeat: repeat-y;
+        }
+        @if ($direction==tb) {
+            background: -webkit-gradient(linear, left bottom, left top, color-stop(50%, transparent), color-stop(50%, $color)) repeat-x left top, -webkit-gradient(linear, left top, left bottom, color-stop(50%, transparent), color-stop(50%, $color)) repeat-x left bottom;
+            background-size: 100% $px1;
+            background-color: #fff;
+        }
+    }
+}
+
+@mixin border1px($position, $color, $w, $width:100%, $height:0, $xypos:left) {
+    position: relative;
+    &:#{$w} {
+        border-#{$position}: $px1 solid $color;
+        content: '';
+        display: block;
+        width: $width;
+        height: $height;
+        position: absolute;
+        font-size: 0;
+        #{$xypos}: 0;
+        #{$position}: 0;
+        @if ($position==right or $position==left) {
+            @include scale(0.5, 1);
+            @if ($position==right) {
+                transform-origin: 100% 50%;
+            }
+            @else {
+                transform-origin: 0 0;
+            }
+        }
+        @else {
+            @include scale(1, 0.5);
+            @if ($position==bottom) {
+                transform-origin: 100% 100%;
+            }
+            @else {
+                transform-origin: 0 0;
+            }
+        }
+    }
+}
+
+@mixin border1px-full($w, $color, $radius:false) {
+    @media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+        position: relative;
+        border: 0 none;
+        &:#{$w} {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            border: $px1 solid $color;
+            transform-origin: 0 0;
+            padding: $px1;
+            box-sizing: border-box;
+            z-index: 2;
+            pointer-events: none;
+        }
+    }
+    @media (-webkit-min-device-pixel-ratio: 1.5),
+        (min-device-pixel-ratio: 1.5) {
+        &:#{$w} {
+            width: 143%;
+            height: 143%;
+            @include scale(0.7, 0.7);
+            @if ($radius) {
+                @include borderRadius($radius/0.7);
+            }
+        }
+    }
+    @media (-webkit-min-device-pixel-ratio: 2),
+        (min-device-pixel-ratio: 2) {
+        &:#{$w} {
+            width: 200%;
+            height: 200%;
+            @include scale(0.5, 0.5);
+            @if ($radius) {
+                @include borderRadius($radius/0.5);
+            }
+        }
+    }
+} // 渐变色
+@mixin gradient($from, $to, $deg: 0) {
+    background: -webkit-linear-gradient($deg, $from, $to);
+    /* webkit核心浏览器兼容代码 */
+    background: -o-linear-gradient($deg, $from, $to);
+    /* Opera浏览器兼容代码 */
+    background: -moz-linear-gradient($deg, $from, $to);
+    /* Firefox 浏览器兼容代码 */
+    background: linear-gradient($deg, $from, $to);
+}
+
+
+/* icon 引入 */
+
+@mixin icon($width, $height, $src) {
+    display: inline-block;
+    width: $width;
+    height: $height;
+    background: url($src) no-repeat;
+    background-size: contain;
+}
+
+/* 背景图片引入 */
+
+@mixin bg($width, $height, $src) {
+    width: $width;
+    height: $height;
+    background: url($src) no-repeat;
+    background-size: 100% 100%;
+}
+
+/*
+    按钮
+    $from：按钮背景颜色，如果只传一个值就是单色背景
+    $to：按钮渐变颜色
+    $deg：渐变角度
+*/
+
+@mixin btn($from, $to:'#00000F', $deg:0) {
+    text-align: center;
+    border-radius: 1000px;
+    //居中
+    @include center();
+    @if ($to=='#00000F') {
+        $to: $from;
+    }
+    @include gradient($from, $to, $deg);
+}
+
+
+/* 超出省略号 */
+
+@mixin ellipsis($width) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: $width;
+}
+
+/* 按钮 */
+
+@mixin bigBtn($width, $height, $borderRadius, $bgColor: transparent, $fontColor: #fff, $fontSize: 26px) {
+    width: $width;
+    height: $height;
+    border-radius: $borderRadius;
+    color: $fontColor;
+    font-size: $fontSize;
+    background-color: $bgColor;
+    letter-spacing: 1px;
+    @include center();
+}
+
+
+/* 遮罩 */
+
+@mixin mask {
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #000;
+    opacity: 0.5;
+}
+
+
+/* 全屏遮罩上下居中 */
+
+@mixin verticalMinddle {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+}
+
+@mixin verticalMinddleContent {
+    align-self: center;
+}
+
+/* 呼吸按钮动画 */
+@mixin breathingBtn () {
+    animation: breathing_btn 0.45s linear 0s infinite alternate;
+    backface-visibility: hidden; /* 元素旋转时隐藏背面 */
+    transform-style: preserve-3d; /* 保留3D空间 */
+}
+
+/* 小手引导动画 */
+@mixin animationHand () {
+    animation: hand_animation 0.2s linear infinite alternate;
+    backface-visibility: hidden; /* 元素旋转时隐藏背面 */
+    transform-style: preserve-3d; /* 保留3D空间 */
+}
