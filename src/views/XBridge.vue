@@ -23,15 +23,14 @@ export default {
     };
   },
   mounted() {
-    this.$bridge.registerHandler('initPage', () => {
+    this.XBridge.registerHandler('initPage', () => {
       console.info(1);
     });
   },
   components: {},
   methods: {
     test() {
-      console.log(this.$bridge.callHandler);
-      this.$bridge.callHandler('jsCallJavaGetDeviceInfo', 1, (data) => {
+      this.XBridge.jsCallJavaGetDeviceInfo(1, (data) => {
         this.deviceInfo = data;
       });
     },

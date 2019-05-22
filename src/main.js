@@ -5,10 +5,10 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import 'mint-ui/lib/style.css';
-import { JsBridge } from '@/utils/xbridge';
+import { XBridge } from '@/utils/xbridge';
 
-// 挂载 $bridge
-Vue.prototype.$bridge = JsBridge;
+// 挂载 XBridge
+Vue.prototype.XBridge = XBridge;
 
 // 移动端调试Console，build时最好手动注释
 // eslint-disable-next-line no-new

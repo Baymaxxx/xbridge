@@ -2,7 +2,7 @@
 /**
  * 函数描述：js调用webview事件
  *
- * jsBridge.callHandler(method, data, callBack(response));
+ * XBridge.callHandler(method, data, callBack(response));
  * @param method {string} 方法名
  * @param data {Object} 参数
  * @return {Object} 回调
@@ -11,7 +11,7 @@
 /**
  * 函数描述：webView调用JS事件
  *
- * jsBridge.registerHandler(method, callBack(response));
+ * XBridge.registerHandler(method, callBack(response));
  * @param method {string} 方法名
  * @return {Object} 回调
  */
@@ -30,7 +30,7 @@ function setCallbacks(callbacks) {
   window.WVJBCallbacks = callbacks;
 }
 
-var JsBridge = {
+var XBridge = {
   init: function bridgeInit(callback) {
     var u = navigator.userAgent;
     var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
@@ -94,8 +94,14 @@ var JsBridge = {
       bridge.callHandler('jsCallJavaAllInOne', data, fun);
     });
   },
+  jsCallJavaGetDeviceInfo: function (params, cb) {
+    console.log(this)
+    this.callHandler('jsCallJavaGetDeviceInfo', params, cb);
+  }
 };
 
-JsBridge.first();
+XBridge.first();
 
-export { JsBridge };
+window.XBridge = XBridge;
+
+export { XBridge };
