@@ -12,6 +12,11 @@ export default new Router({
       component: Home,
     },
     {
+      path: '/xbridge',
+      name: 'xbridge',
+      component: () => import(/* webpackChunkName: "xbridge" */ './views/XBridge.vue'),
+    },
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting

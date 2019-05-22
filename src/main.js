@@ -1,13 +1,21 @@
 import { Button, Cell } from 'mint-ui';
+import VConsole from 'vconsole';
 import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
 import 'mint-ui/lib/style.css';
+import { JsBridge } from '@/utils/xbridge';
+
+// 挂载 $bridge
+Vue.prototype.$bridge = JsBridge;
+
+// 移动端调试Console，build时最好手动注释
+// eslint-disable-next-line no-new
+new VConsole();
 
 Vue.use(Button);
 Vue.use(Cell);
-
 Vue.config.productionTip = false;
 
 new Vue({
