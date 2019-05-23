@@ -94,14 +94,8 @@ var XBridge = {
       bridge.callHandler('jsCallJavaAllInOne', data, fun);
     });
   },
-  jsCallJavaGetDeviceInfo: function (params, cb) {
-    console.log(this)
-    this.callHandler('jsCallJavaGetDeviceInfo', params, cb);
-  }
 };
 
 XBridge.first();
-
-window.XBridge = XBridge;
 
 export { XBridge };
