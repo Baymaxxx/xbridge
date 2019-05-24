@@ -1,7 +1,10 @@
 <template>
   <div class="g-xbridge">
     <img alt="Vue logo" class="logo" src="../assets/logo.png" />
-    <div>{{ returnData }}</div>
+    <ul v-if="returnRes">
+      <li v-for="(item, index) in Object.keys(returnRes)"
+      :key="index">{{item}}: {{returnRes[item]}}</li>
+    </ul>
     <ul class="m-native-wrap">
       <li v-for="(item, index) in methods"
       :class="{'active': index === activeId}"
@@ -69,7 +72,7 @@ export default {
           desc: '交由系统打开指定url',
         },
       ],
-      returnData: null,
+      returnRes: null,
       activeId: -1,
     };
   },
@@ -88,16 +91,17 @@ export default {
   methods: {
     callNative(method, index) {
       let params = {};
+      this.returnRes = null;
       this.activeId = index;
       switch (method) {
         case 'jsCallJavaGetDeviceInfo':
           this.XBridge.callHandler('jsCallJavaGetDeviceInfo', JSON.stringify(params), (data) => {
-            this.returnData = data;
+            this.returnRes = data && JSON.parse(data);
           });
           break;
         case 'jsx_getPublicUserInfo':
           this.XBridge.callHandler('jsx_getPublicUserInfo', JSON.stringify(params), (data) => {
-            this.returnData = data;
+            this.returnRes = data && JSON.parse(data);
           });
           break;
         case 'jsx_startApp':
@@ -105,12 +109,12 @@ export default {
             packageName: 'com.****',
           };
           this.XBridge.callHandler('jsx_startApp', JSON.stringify(params), (data) => {
-            this.returnData = data;
+            this.returnRes = data && JSON.parse(data);
           });
           break;
         case 'jsx_getAppInfo':
           this.XBridge.callHandler('jsx_getAppInfo', JSON.stringify(params), (data) => {
-            this.returnData = data;
+            this.returnRes = data && JSON.parse(data);
           });
           break;
         case 'jsx_queryApp':
@@ -118,17 +122,17 @@ export default {
             packageName: 'com.****',
           };
           this.XBridge.callHandler('jsx_queryApp', JSON.stringify(params), (data) => {
-            this.returnData = data;
+            this.returnRes = data && JSON.parse(data);
           });
           break;
         case 'jsx_goToLogin':
           this.XBridge.callHandler('jsx_goToLogin', JSON.stringify(params), (data) => {
-            this.returnData = data;
+            this.returnRes = data && JSON.parse(data);
           });
           break;
         case 'jsx_isLogin':
           this.XBridge.callHandler('jsx_isLogin', JSON.stringify(params), (data) => {
-            this.returnData = data;
+            this.returnRes = data && JSON.parse(data);
           });
           break;
         case 'jsx_copy':
@@ -136,7 +140,7 @@ export default {
             content: '12345',
           };
           this.XBridge.callHandler('jsx_copy', JSON.stringify(params), (data) => {
-            this.returnData = data;
+            this.returnRes = data && JSON.parse(data);
           });
           break;
         case 'jsx_openUrlInNewWindow':
@@ -146,17 +150,17 @@ export default {
             isFullscreen: 0,
           };
           this.XBridge.callHandler('jsx_openUrlInNewWindow', JSON.stringify(params), (data) => {
-            this.returnData = data;
+            this.returnRes = data && JSON.parse(data);
           });
           break;
         case 'jsx_closeWindow':
           this.XBridge.callHandler('jsx_closeWindow', JSON.stringify(params), (data) => {
-            this.returnData = data;
+            this.returnRes = data && JSON.parse(data);
           });
           break;
         case 'jsx_getNetworkType':
           this.XBridge.callHandler('jsx_getNetworkType', JSON.stringify(params), (data) => {
-            this.returnData = data;
+            this.returnRes = data && JSON.parse(data);
           });
           break;
         case 'jsx_openUrlBySystem':
@@ -164,7 +168,7 @@ export default {
             url: '12345',
           };
           this.XBridge.callHandler('jsx_openUrlBySystem', JSON.stringify(params), (data) => {
-            this.returnData = data;
+            this.returnRes = data && JSON.parse(data);
           });
           break;
 
@@ -178,6 +182,8 @@ export default {
 <style lang="scss" scoped>
 .g-xbridge {
   text-align: left;
+  width: 100%;
+  overflow: hidden;
   .logo {
     margin: 0 auto;
     display: block;
@@ -187,10 +193,9 @@ export default {
     width: 100%;
     text-align: left;
     li {
-      padding-left: 20px;
+      padding: 12px 20px;
       box-sizing: border-box;
-      height: 40px;
-      line-height: 40px;
+      word-break: break-all;
       @include border1px(bottom, #e8e8e8, after);
       &:active, &.active {
         background-color: #e8e8e8;

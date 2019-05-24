@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@baymaxxx/xbridge": "^1.0.1",
     "core-js": "^2.6.5",
     "mint-ui": "^2.2.13",
     "vconsole": "^3.3.0",

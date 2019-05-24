@@ -1,11 +1,11 @@
 import { Button, Cell } from 'mint-ui';
+import { XBridge } from '@baymaxxx/xbridge';
 import VConsole from 'vconsole';
 import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
 import 'mint-ui/lib/style.css';
-import { XBridge } from '@/utils/xbridge';
 
 // 挂载 XBridge
 Vue.prototype.XBridge = XBridge;
