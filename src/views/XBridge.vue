@@ -77,14 +77,17 @@ export default {
     };
   },
   mounted() {
-    this.XBridge.registerHandler('initPage', () => {
-      console.info(1);
-    });
-    this.XBridge.registerHandler('jsx_onVisibilityChanged', () => {
-      console.info(1);
-    });
-    this.XBridge.registerHandler('jsx_onLoginChanged', () => {
-      console.info(1);
+    this.XBridge.registerHandler('jsx_jsHandler', (res) => {
+      console.info(JSON.parse(res).method);
+      const method = typeof res === 'string' && JSON.parse(res).method;
+      switch (method) {
+        case 'jsx_onVisibilityChanged':
+          console.info('jsx_onVisibilityChanged');
+          break;
+
+        default:
+          break;
+      }
     });
   },
   components: {},
