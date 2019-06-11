@@ -1,5 +1,5 @@
 <template>
-  <div class="g-xbridge">
+  <div class="g-OpBridge">
     <img alt="Vue logo" class="logo" src="../assets/logo.png" />
     <ul v-if="returnRes">
       <li v-for="(item, index) in Object.keys(returnRes)"
@@ -19,7 +19,7 @@
 // @ is an alias to /src
 
 export default {
-  name: 'xbridge',
+  name: 'OpBridge',
   data() {
     return {
       methods: [
@@ -77,10 +77,13 @@ export default {
     };
   },
   mounted() {
-    this.XBridge.registerHandler('jsx_jsHandler', (res) => {
+    this.OpBridge.registerHandler('jsx_jsHandler', (res) => {
       console.info(JSON.parse(res).method);
       const method = typeof res === 'string' && JSON.parse(res).method;
       switch (method) {
+        case 'jsx_onLoginChanged':
+          console.info('jsx_onLoginChanged');
+          break;
         case 'jsx_onVisibilityChanged':
           console.info('jsx_onVisibilityChanged');
           break;
@@ -98,43 +101,43 @@ export default {
       this.activeId = index;
       switch (method) {
         case 'jsCallJavaGetDeviceInfo':
-          this.XBridge.callHandler('jsCallJavaGetDeviceInfo', JSON.stringify(params), (data) => {
+          this.OpBridge.callHandler('jsCallJavaGetDeviceInfo', params, (data) => {
             this.returnRes = data && JSON.parse(data);
           });
           break;
         case 'jsx_getPublicUserInfo':
-          this.XBridge.callHandler('jsx_getPublicUserInfo', JSON.stringify(params), (data) => {
+          this.OpBridge.getPublicUserInfo(params, (data) => {
             this.returnRes = data && JSON.parse(data);
           });
           break;
         case 'jsx_startApp':
           params = {
-            packageName: 'com.****',
+            packageName: 'com.startinghandak',
           };
-          this.XBridge.callHandler('jsx_startApp', JSON.stringify(params), (data) => {
+          this.OpBridge.startApp(params, (data) => {
             this.returnRes = data && JSON.parse(data);
           });
           break;
         case 'jsx_getAppInfo':
-          this.XBridge.callHandler('jsx_getAppInfo', JSON.stringify(params), (data) => {
+          this.OpBridge.getAppInfo(params, (data) => {
             this.returnRes = data && JSON.parse(data);
           });
           break;
         case 'jsx_queryApp':
           params = {
-            packageName: 'com.****',
+            packageName: 'com.startinghandak',
           };
-          this.XBridge.callHandler('jsx_queryApp', JSON.stringify(params), (data) => {
+          this.OpBridge.queryApp(params, (data) => {
             this.returnRes = data && JSON.parse(data);
           });
           break;
         case 'jsx_goToLogin':
-          this.XBridge.callHandler('jsx_goToLogin', JSON.stringify(params), (data) => {
+          this.OpBridge.goToLogin(params, (data) => {
             this.returnRes = data && JSON.parse(data);
           });
           break;
         case 'jsx_isLogin':
-          this.XBridge.callHandler('jsx_isLogin', JSON.stringify(params), (data) => {
+          this.OpBridge.isLogin(params, (data) => {
             this.returnRes = data && JSON.parse(data);
           });
           break;
@@ -142,35 +145,35 @@ export default {
           params = {
             content: '12345',
           };
-          this.XBridge.callHandler('jsx_copy', JSON.stringify(params), (data) => {
+          this.OpBridge.copy(params, (data) => {
             this.returnRes = data && JSON.parse(data);
           });
           break;
         case 'jsx_openUrlInNewWindow':
           params = {
-            uri: '12345',
+            uri: 'http://www.2345.com',
             hasTitleBar: 0,
             isFullscreen: 0,
           };
-          this.XBridge.callHandler('jsx_openUrlInNewWindow', JSON.stringify(params), (data) => {
+          this.OpBridge.openUrlInNewWindow(params, (data) => {
             this.returnRes = data && JSON.parse(data);
           });
           break;
         case 'jsx_closeWindow':
-          this.XBridge.callHandler('jsx_closeWindow', JSON.stringify(params), (data) => {
+          this.OpBridge.closeWindow(params, (data) => {
             this.returnRes = data && JSON.parse(data);
           });
           break;
         case 'jsx_getNetworkType':
-          this.XBridge.callHandler('jsx_getNetworkType', JSON.stringify(params), (data) => {
+          this.OpBridge.getNetworkType(params, (data) => {
             this.returnRes = data && JSON.parse(data);
           });
           break;
         case 'jsx_openUrlBySystem':
           params = {
-            url: '12345',
+            url: 'http://www.2345.com',
           };
-          this.XBridge.callHandler('jsx_openUrlBySystem', JSON.stringify(params), (data) => {
+          this.OpBridge.openUrlBySystem(params, (data) => {
             this.returnRes = data && JSON.parse(data);
           });
           break;
@@ -183,7 +186,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.g-xbridge {
+.g-OpBridge {
   text-align: left;
   width: 100%;
   overflow: hidden;
