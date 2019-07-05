@@ -92,44 +92,62 @@ var OpBridge = {
     var $this = this;
     var data =  { method, params };
     $this.init((bridge) => {
-      bridge.callHandler('jsCallJavaAllInOne', data, fun);
+      console.log(data)
+      return new Promise((resolve) => {
+          bridge.callHandler('jsCallJavaAllInOne', data, (data) => {
+              resolve(JSON.parse(data));
+          });
+      });
     });
   },
-  getPublicUserInfo: function bridgeGetDeviceInfo(params, fun) {
-    this.callHandler('jsx_getPublicUserInfo', params, fun);
-  },
-  startApp: function bridgeStartApp(params, fun) {
-    this.callHandler('jsx_startApp', params, fun);
-  },
-  getAppInfo: function bridgeGetAppInfo(params, fun) {
-    this.callHandler('jsx_getAppInfo', params, fun);
-  },
-  queryApp: function bridgeQueryApp(params, fun) {
-    this.callHandler('jsx_queryApp', params, fun);
-  },
-  goToLogin: function bridgeGoToLogin(params, fun) {
-    this.callHandler('jsx_goToLogin', params, fun);
-  },
-  isLogin: function bridgeIsLogin(params, fun) {
-    this.callHandler('jsx_isLogin', params, fun);
-  },
-  copy: function bridgeCopy(params, fun) {
-    this.callHandler('jsx_copy', params, fun);
-  },
-  openUrlInNewWindow: function bridgeOpenUrlInNewWindow(params, fun) {
-    this.callHandler('jsx_openUrlInNewWindow', params, fun);
-  },
-  closeWindow: function bridgeCloseWindow(params, fun) {
-    this.callHandler('jsx_closeWindow', params, fun);
-  },
-  getNetworkType: function bridgeGetNetworkType(params, fun) {
-    this.callHandler('jsx_getNetworkType', params, fun);
-  },
-  openUrlBySystem: function bridgeOpenUrlBySystem(params, fun) {
-    this.callHandler('jsx_openUrlBySystem', params, fun);
+
+  getPublicUserInfo: function(params) {
+     return new Promise((resolve, reject) =>{
+        try {
+          this.callHandler('jsx_getPublicUserInfo', params, (data) => {
+            console.log(data);
+            resolve(data);
+          });
+        } catch (error) {
+          reject(error);
+        }
+     })
   }
 };
 
+//   getPublicUserInfo: function bridgeGetDeviceInfo(params, fun) {
+//     this.callHandler('jsx_getPublicUserInfo', params, fun);
+//   },
+//   startApp: function bridgeStartApp(params, fun) {
+//     this.callHandler('jsx_startApp', params, fun);
+//   },
+//   getAppInfo: function bridgeGetAppInfo(params, fun) {
+//     this.callHandler('jsx_getAppInfo', params, fun);
+//   },
+//   queryApp: function bridgeQueryApp(params, fun) {
+//     this.callHandler('jsx_queryApp', params, fun);
+//   },
+//   goToLogin: function bridgeGoToLogin(params, fun) {
+//     this.callHandler('jsx_goToLogin', params, fun);
+//   },
+//   isLogin: function bridgeIsLogin(params, fun) {
+//     this.callHandler('jsx_isLogin', params, fun);
+//   },
+//   copy: function bridgeCopy(params, fun) {
+//     this.callHandler('jsx_copy', params, fun);
+//   },
+//   openUrlInNewWindow: function bridgeOpenUrlInNewWindow(params, fun) {
+//     this.callHandler('jsx_openUrlInNewWindow', params, fun);
+//   },
+//   closeWindow: function bridgeCloseWindow(params, fun) {
+//     this.callHandler('jsx_closeWindow', params, fun);
+//   },
+//   getNetworkType: function bridgeGetNetworkType(params, fun) {
+//     this.callHandler('jsx_getNetworkType', params, fun);
+//   },
+//   openUrlBySystem: function bridgeOpenUrlBySystem(params, fun) {
+//     this.callHandler('jsx_openUrlBySystem', params, fun);
+//   }
 OpBridge.first();
 
 

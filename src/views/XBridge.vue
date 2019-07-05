@@ -24,10 +24,6 @@ export default {
     return {
       methods: [
         {
-          name: 'jsCallJavaGetDeviceInfo',
-          desc: '获取公开用户信息',
-        },
-        {
           name: 'jsx_getPublicUserInfo',
           desc: '获取公开用户信息',
         },
@@ -78,14 +74,14 @@ export default {
   },
   mounted() {
     this.OpBridge.registerHandler('jsx_jsHandler', (res) => {
-      console.info(JSON.parse(res).method);
-      const method = typeof res === 'string' && JSON.parse(res).method;
+      console.info(JSON.parse(res).method, JSON.parse(res).params);
+      const { method, params } = typeof res === 'string' && JSON.parse(res);
       switch (method) {
         case 'jsx_onLoginChanged':
           console.info('jsx_onLoginChanged');
           break;
         case 'jsx_onVisibilityChanged':
-          console.info('jsx_onVisibilityChanged');
+          console.info(params.visibility);
           break;
 
         default:
@@ -100,13 +96,9 @@ export default {
       this.returnRes = null;
       this.activeId = index;
       switch (method) {
-        case 'jsCallJavaGetDeviceInfo':
-          this.OpBridge.callHandler('jsCallJavaGetDeviceInfo', params, (data) => {
-            this.returnRes = data && JSON.parse(data);
-          });
-          break;
         case 'jsx_getPublicUserInfo':
-          this.OpBridge.getPublicUserInfo(params, (data) => {
+          console.log(params)
+          this.OpBridge.getPublicUserInfo(params).then((data) => {
             this.returnRes = data && JSON.parse(data);
           });
           break;

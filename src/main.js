@@ -12,7 +12,7 @@ Vue.prototype.OpBridge = OpBridge;
 
 // 移动端调试Console，build时最好手动注释
 // eslint-disable-next-line no-new
-new VConsole();
+// new VConsole();
 
 Vue.use(Button);
 Vue.use(Cell);
