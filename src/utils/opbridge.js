@@ -32,7 +32,7 @@ function setCallbacks(callbacks) {
 }
 
 var OpBridge = {
-  init: function bridgeInit(callback) {
+  init: function (callback) {
     var u = navigator.userAgent;
     var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
     let bridge = getBridge();
@@ -68,7 +68,7 @@ var OpBridge = {
     }
   },
 
-  first: function bridgeFirst() {
+  first: function () {
     var u = navigator.userAgent;
     var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
     if (!isiOS) {
@@ -81,75 +81,58 @@ var OpBridge = {
     }
   },
 
-  registerHandler: function bridgeRegisterHandler(name, fun) {
+  registerHandler: function (name, fun) {
     var $this = this;
     $this.init((bridge) => {
       bridge.registerHandler(name, fun);
     });
   },
 
-  callHandler: function bridgeCallHandler(method, params, fun) {
+  callHandler: function (method, params, fun) {
     var $this = this;
     var data =  { method, params };
     $this.init((bridge) => {
-      console.log(data)
-      return new Promise((resolve) => {
-          bridge.callHandler('jsCallJavaAllInOne', data, (data) => {
-              resolve(JSON.parse(data));
-          });
-      });
+        bridge.callHandler('jsCallJavaAllInOne', data, fun);
     });
   },
 
-  getPublicUserInfo: function(params) {
-     return new Promise((resolve, reject) =>{
-        try {
-          this.callHandler('jsx_getPublicUserInfo', params, (data) => {
-            console.log(data);
-            resolve(data);
-          });
-        } catch (error) {
-          reject(error);
-        }
-     })
+  install: function(method) {
+    return function(params) {
+      return new Promise((resolve, reject) =>{
+          try {
+            this.callHandler(method, params, (data) => {
+              resolve(data);
+            });
+          } catch (error) {
+            reject(error);
+          }
+      })
+    }
   }
 };
 
-//   getPublicUserInfo: function bridgeGetDeviceInfo(params, fun) {
-//     this.callHandler('jsx_getPublicUserInfo', params, fun);
-//   },
-//   startApp: function bridgeStartApp(params, fun) {
-//     this.callHandler('jsx_startApp', params, fun);
-//   },
-//   getAppInfo: function bridgeGetAppInfo(params, fun) {
-//     this.callHandler('jsx_getAppInfo', params, fun);
-//   },
-//   queryApp: function bridgeQueryApp(params, fun) {
-//     this.callHandler('jsx_queryApp', params, fun);
-//   },
-//   goToLogin: function bridgeGoToLogin(params, fun) {
-//     this.callHandler('jsx_goToLogin', params, fun);
-//   },
-//   isLogin: function bridgeIsLogin(params, fun) {
-//     this.callHandler('jsx_isLogin', params, fun);
-//   },
-//   copy: function bridgeCopy(params, fun) {
-//     this.callHandler('jsx_copy', params, fun);
-//   },
-//   openUrlInNewWindow: function bridgeOpenUrlInNewWindow(params, fun) {
-//     this.callHandler('jsx_openUrlInNewWindow', params, fun);
-//   },
-//   closeWindow: function bridgeCloseWindow(params, fun) {
-//     this.callHandler('jsx_closeWindow', params, fun);
-//   },
-//   getNetworkType: function bridgeGetNetworkType(params, fun) {
-//     this.callHandler('jsx_getNetworkType', params, fun);
-//   },
-//   openUrlBySystem: function bridgeOpenUrlBySystem(params, fun) {
-//     this.callHandler('jsx_openUrlBySystem', params, fun);
-//   }
-OpBridge.first();
+const methods = {
+  getPublicUserInfo: 'jsx_getPublicUserInfo',
+  startApp: 'jsx_startApp',
+  getAppInfo: 'jsx_getAppInfo',
+  queryApp: 'jsx_queryApp',
+  goToLogin: 'jsx_goToLogin',
+  isLogin: 'jsx_isLogin',
+  copy: 'jsx_copy',
+  openUrlInNewWindow: 'jsx_openUrlInNewWindow',
+  closeWindow: 'jsx_closeWindow',
+  getNetworkType: 'jsx_getNetworkType',
+  openUrlBySystem: 'jsx_openUrlBySystem'
+};
 
+for (const key in methods) {
+  if (methods.hasOwnProperty(key)) {
+    const element = methods[key];
+    OpBridge[key] = OpBridge.install(element);
+  }
+}
+
+OpBridge.first();
 
 export { OpBridge };
 
