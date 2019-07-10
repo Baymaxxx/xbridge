@@ -1,7 +1,6 @@
 <template>
   <div class="g-OpBridge">
     <img alt="Vue logo" class="logo" src="../assets/logo.png" />
-    {{returnRes}}
     <ul v-if="returnRes">
       <li v-for="(item, index) in Object.keys(returnRes)"
       :key="index">{{item}}: {{returnRes[item]}}</li>

@@ -80,7 +80,11 @@ var OpBridge = {
       });
     }
   },
-
+  /**
+   * h5为native注册方法
+   * @param {*} name h5注册给native调用的方法名
+   * @param {*} fun native调用此方法的回调
+   */
   registerHandler: function (name, fun) {
     var $this = this;
     $this.init((bridge) => {
@@ -88,6 +92,12 @@ var OpBridge = {
     });
   },
 
+  /**
+   *
+   * @param {*} method native注册给h5调用的方法名
+   * @param {*} params 调用方法传参
+   * @param {*} fun 调用方法回调
+   */
   callHandler: function (method, params, fun) {
     var $this = this;
     var data =  { method, params };
@@ -96,6 +106,10 @@ var OpBridge = {
     });
   },
 
+  /**
+   * h5内部封装native方法
+   * @param {*} method 需封装的方法名
+   */
   install: function(method) {
     return function(params) {
       return new Promise((resolve, reject) =>{
@@ -111,7 +125,7 @@ var OpBridge = {
   }
 };
 
-const methods = {
+const METHODS = {
   getPublicUserInfo: 'jsx_getPublicUserInfo',
   startApp: 'jsx_startApp',
   getAppInfo: 'jsx_getAppInfo',
@@ -125,9 +139,9 @@ const methods = {
   openUrlBySystem: 'jsx_openUrlBySystem'
 };
 
-for (const key in methods) {
-  if (methods.hasOwnProperty(key)) {
-    const element = methods[key];
+for (const key in METHODS) {
+  if (METHODS.hasOwnProperty(key)) {
+    const element = METHODS[key];
     OpBridge[key] = OpBridge.install(element);
   }
 }
