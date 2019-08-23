@@ -1,5 +1,5 @@
 /* eslint-disable */
-// power https://github.com/lzyzsd/JsBridge
+// powerby https://github.com/lzyzsd/JsBridge
 /**
  * 函数描述：js调用webview事件
  *
@@ -136,7 +136,13 @@ const METHODS = {
   openUrlInNewWindow: 'jsx_openUrlInNewWindow',
   closeWindow: 'jsx_closeWindow',
   getNetworkType: 'jsx_getNetworkType',
-  openUrlBySystem: 'jsx_openUrlBySystem'
+  openUrlBySystem: 'jsx_openUrlBySystem',
+  encryptString: 'jsx_encryptString',
+  decryptString: 'jsx_decryptString',
+  listenBack: 'jsx_listenBack',
+  openScan: 'jsx_openScan',
+  statistics: 'jsx_statistics',
+  commonShare: 'jsx_commonShare',
 };
 
 for (const key in METHODS) {

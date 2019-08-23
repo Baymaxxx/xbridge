@@ -1,9 +1,8 @@
 <template>
   <div class="g-OpBridge">
-    <img alt="Vue logo" class="logo" src="../assets/logo.png" />
     <ul v-if="returnRes">
-      <li v-for="(item, index) in Object.keys(returnRes)"
-      :key="index">{{item}}: {{returnRes[item]}}</li>
+      <li @click="copy(returnRes[item])" v-for="(item, index) in Object.keys(returnRes)"
+      :key="index">{{item}}: {{returnRes[item]}} <span class="main-color">（点击可复制）</span></li>
     </ul>
     <ul class="m-native-wrap">
       <li v-for="(item ,index) in methods"
@@ -67,6 +66,34 @@ export default {
           name: 'jsx_openUrlBySystem',
           desc: '交由系统打开指定url',
         },
+        {
+          name: 'jsx_encryptString',
+          desc: '加密字符串',
+        },
+        {
+          name: 'jsx_decryptString',
+          desc: '解密字符串',
+        },
+        {
+          name: 'jsx_listenBack',
+          desc: '监听返回事件',
+        },
+        {
+          name: 'jsx_openScan',
+          desc: '打开扫码界面',
+        },
+        {
+          name: 'jsx_statiscs',
+          desc: '事件统计',
+        },
+        {
+          name: 'jsx_commonShare',
+          desc: '通用分享',
+        },
+        {
+          name: 'jsx_downloadProgress',
+          desc: '下载调用回调进度',
+        },
       ],
       returnRes: null,
       activeId: -1,
@@ -83,7 +110,10 @@ export default {
         case 'jsx_onVisibilityChanged':
           console.info(params.visibility);
           break;
-
+        case 'jsx_downloadProgress':
+          console.info(params.progress);
+          this.returnRes = params.progress;
+          break;
         default:
           break;
       }
@@ -91,6 +121,17 @@ export default {
   },
   components: {},
   methods: {
+    copy(txt) {
+      const params = {
+        content: txt,
+      };
+      this.OpBridge.copy(params).then(() => {
+        this.$toast({
+          message: '复制成功',
+          duration: 500,
+        });
+      });
+    },
     callNative(method, index) {
       let params = {};
       this.returnRes = null;
@@ -169,7 +210,65 @@ export default {
             this.returnRes = data && JSON.parse(data);
           });
           break;
-
+        case 'jsx_encryptString':
+          params = {
+            isPrivateEncrypt: 0,
+            plainText: 'http://www.2345.com',
+          };
+          this.OpBridge.encryptString(params).then((data) => {
+            console.info(data, 'data');
+            this.returnRes = data && JSON.parse(data);
+          });
+          break;
+        case 'jsx_decryptString':
+          params = {
+            isPrivateEncrypt: 0,
+            encryptText: 'BQQDCQpdRxEcFBkHWwNMWw4fGg%3D%3D',
+          };
+          console.log(params);
+          this.OpBridge.decryptString(params).then((data) => {
+            this.returnRes = data && JSON.parse(data);
+          });
+          break;
+        case 'jsx_listenBack':
+          params = {
+            listenBack: 1,
+          };
+          this.OpBridge.listenBack(params).then((data) => {
+            this.returnRes = data && JSON.parse(data);
+          });
+          break;
+        case 'jsx_openScan':
+          params = {
+            from: 'xianxia_tuiguang',
+          };
+          this.OpBridge.openScan(params).then((data) => {
+            console.info(data, 'openScan');
+            this.returnRes = data && JSON.parse(data);
+          });
+          break;
+        case 'jsx_statistics':
+          params = {
+            eventName: 'test',
+            eventParams: [{
+              key: 'key1',
+              value: 'value1',
+            },
+            {
+              key: 'key2',
+              value: 'value2',
+            }],
+          };
+          this.OpBridge.statistics(params).then((data) => {
+            this.returnRes = data && JSON.parse(data);
+          });
+          break;
+        case 'jsx_commonShare':
+          this.$router.push({ path: 'share' });
+          break;
+        case 'jsx_downloadProgress':
+          window.location.href = 'http://tianqi.2345.com/redirect.php?downloadQr';
+          break;
         default:
           break;
       }

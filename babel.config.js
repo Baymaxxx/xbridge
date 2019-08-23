@@ -2,9 +2,10 @@ module.exports = {
   presets: ['@vue/app'],
   plugins: [
     [
-      'component',
+      'import',
       {
-        libraryName: 'mint-ui',
+        libraryName: 'vant',
+        libraryDirectory: 'es',
         style: true,
       },
     ],
